@@ -1,0 +1,26 @@
+<div class="w-full h-[500px] max-h-full relative" #drawingAreaContainer>
+  <div
+    class="absolute md:right-0 -right-[2px] top-0 border border-gray-300 rounded-tr-xl rounded-bl-xl"
+  >
+    <button
+      class="p-2 px-4 hover:bg-gray-300 duration-200 rounded-tr-lg rounded-bl-lg"
+      (click)="resetDrawing(false)"
+    >
+      Clear
+    </button>
+  </div>
+  <canvas
+    #drawingArea
+    class="border border-gray-300 rounded-xl"
+    (mousedown)="startDrawing($event)"
+    (mousemove)="draw($event)"
+    (mouseup)="stopDrawing()"
+  ></canvas>
+  <div
+    #cursorTracker
+    *ngIf="currentUserName"
+    class="flex flex-row gap-1 absolute top-0 bg-white border items-center rounded-xl px-2 py-1"
+  >
+    <span class="text-sm">👨‍🎨</span>{{ currentUserName }}
+  </div>
+</div>

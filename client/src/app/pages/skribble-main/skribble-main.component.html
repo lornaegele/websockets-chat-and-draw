@@ -1,0 +1,55 @@
+<div class="bg-white">
+  <app-header></app-header>
+  <div
+    class="flex flex-col-reverse md:flex-row w-full md:p-0 p-6 md:gap-0 gap-6"
+  >
+    <div class="flex flex-col md:w-5/6 w-full md:m-8 gap-2">
+      <div class="flex flex-row justify-between items-baseline">
+        <h1 class="text-2xl font-bold pl-2">
+          <span class="text-lg">🖌️</span> Draw
+        </h1>
+        <div
+          class="flex flex-row justify-between items-center font-bold text-xl gap-2 px-2"
+        >
+          <mat-icon>person</mat-icon>
+          {{ this.skribbleSocketService.userName }}
+        </div>
+      </div>
+      <app-drawing-area
+        [strokeWidthProps]="strokeWidth"
+        [strokeColorProps]="selectedColor"
+      ></app-drawing-area>
+    </div>
+    <app-sidebar
+      [usersProp]="users"
+      [historyArrayProp]="historyArray"
+      (strokeWidthChangeEmit)="onStrokeWidthChange($event)"
+      (selectedColorChangeEmit)="onSelectedColorChange($event)"
+    ></app-sidebar>
+  </div>
+  <!-- Modal that opens when the username is already taken -->
+  <dialog id="form_modal" class="modal">
+    <div class="modal-box">
+      <div class="flex flex-col gap-2">
+        <p class="font-bold px-0 text-2xl">Name taken</p>
+        <p class="text-gray-600">
+          Your name is allready taken, please choose another one!
+        </p>
+
+        <input
+          type="text"
+          placeholder="John Doe"
+          class="input input-bordered w-full"
+          (input)="onInputChange($event)"
+          [value]="nameInput"
+        />
+        <p [hidden]="!nameTaken" class="text-sm text-red-500">
+          Username is allready taken, choose another one.
+        </p>
+        <div class="flex justify-end pt-2">
+          <button class="btn" (click)="onConfirmClick()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>

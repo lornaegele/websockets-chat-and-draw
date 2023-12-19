@@ -1,0 +1,82 @@
+<div
+  class="w-full md:h-[calc(100vh-74px)] flex md:flex-col items-center gap-6 md:border-l border-gray-300 md:p-4 md:pt-10"
+>
+  <div class="md:w-full w-1/2 flex flex-col gap-2 font-bold">
+    <div class="flex items-center justify-between">
+      Stroke Color
+      <mat-icon class="scale-90"> format_color_fill</mat-icon>
+    </div>
+    <input
+      type="color"
+      (input)="onColorChange($event)"
+      #colorInput
+      class="w-full h-[40px]"
+    />
+  </div>
+
+  <div class="md:w-full w-1/2 flex-col gap-3 font-bold">
+    <div class="flex items-center justify-between pb-1">
+      Stroke Width<mat-icon>brush</mat-icon>
+    </div>
+    <input
+      type="range"
+      min="1"
+      max="30"
+      value="5"
+      class="range"
+      (input)="onStrokeWidthChange($event)"
+      [value]="strokeWidth"
+    />
+  </div>
+  <div class="md:w-full w-1/2 flex flex-col gap-2 font-bold">
+    <div class="flex items-center justify-between">Room ID</div>
+    <button
+      class="flex items-center gap-3 bg-gray-100 p-3 px-4 rounded-xl hover:bg-gray-200 duration-200 ease-in-out"
+      [hidden]="skribbleSocketService.roomId === ''"
+      (click)="copyToClipboard()"
+    >
+      <p>{{ skribbleSocketService.roomId }}</p>
+      <ng-container *ngIf="copied; else notCopied">
+        <mat-icon class="text-gray-800 scale-90">check</mat-icon>
+      </ng-container>
+      <ng-template #notCopied>
+        <mat-icon class="text-gray-800 scale-90">file_copy</mat-icon>
+      </ng-template>
+    </button>
+  </div>
+  <div class="md:flex md:w-full w-1/2 flex-col gap-2 font-bold hidden">
+    <div class="flex flex-row justify-between items-center">
+      Active users
+      <mat-icon class="scale-90">people</mat-icon>
+    </div>
+
+    <div
+      class="flex gap-3 items-center w-full text-gray-500 pl-2"
+      *ngFor="let user of usersProp"
+    >
+      <span class="pl-2 w-3 h-3 bg-green-500 rounded-full"></span>
+      <span>
+        {{ user.name }}
+      </span>
+    </div>
+    <div
+      class="flex flex-row justify-between items-center"
+      *ngIf="historyArrayProp.length !== 0"
+    >
+      History
+      <mat-icon class="scale-90">history</mat-icon>
+    </div>
+
+    <div
+      class="flex justify-between gap-4 items-center w-full text-gray-500"
+      *ngFor="let user of historyArrayProp"
+    >
+      <span>
+        {{ user.message }}
+      </span>
+      <span>
+        {{ user.date | date : "HH:mm" }}
+      </span>
+    </div>
+  </div>
+</div>

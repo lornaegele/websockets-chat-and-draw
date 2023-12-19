@@ -1,0 +1,106 @@
+<div class="h-screen w-screen flex justify-center items-center">
+  <a
+    (click)="switchRoutes()"
+    class="absolute bg-black text-white top-4 right-4 border-black border py-2 px-4 rounded-xl cursor-pointer hover:bg-gray-600 duration-200 ease-in-out"
+  >
+    <ng-container *ngIf="textService.oppositeText.title === 'Skribble'"
+      >🖌️</ng-container
+    >
+    <ng-container *ngIf="textService.oppositeText.title === 'ChatRoom'"
+      >💬</ng-container
+    >
+    &nbsp; Switch to {{ textService.oppositeText.title }}
+  </a>
+
+  <div class="bg-white p-6 rounded-xl shadow flex flex-col w-[400px] gap-4">
+    <button [hidden]="isDisabled" (click)="toggleRoomInput()">
+      <div
+        class="flex flex-row items-center gap-1 hover:gap-[6px] duration-200 p-2 px-3 rounded-xl bg-gray-100 w-[100px]"
+      >
+        <mat-icon class="scale-90">arrow_back</mat-icon>
+        Back
+      </div>
+    </button>
+
+    <div>
+      <h1 class="text-2xl font-bold">{{ textService.text.title }}</h1>
+      <p class="text-gray-400">
+        {{ textService.text.subtitle }}
+      </p>
+    </div>
+    <div class="flex flex-col gap-1">
+      <p class="font-bold px-0">Name</p>
+      <input
+        type="text"
+        placeholder="John Doe"
+        class="p-2 rounded-xl px-4 border w-full"
+        (input)="onInputChange($event, 'nameInput')"
+        [value]="roomConfig.nameInput"
+      />
+      <p [hidden]="!showNameRequired" class="text-sm text-red-500">
+        Username must contain at least 2 characters!
+      </p>
+      <p [hidden]="!nameTaken" class="text-sm text-red-500">
+        Username is allready taken, choose another one.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-1 relative">
+      <p class="font-bold px-0">Room ID</p>
+      <input
+        type="text"
+        placeholder="e.g. fX3GoPcnBKfXxQA8"
+        class="p-2 rounded-xl px-4 border w-full"
+        [ngClass]="{ 'text-gray-400': isDisabled }"
+        (input)="onInputChange($event, 'roomInput')"
+        [value]="roomConfig.roomInput"
+        [disabled]="isDisabled"
+      />
+      <button
+        [hidden]="roomConfig.roomInput === ''"
+        class="absolute top-9 right-3 hover:cursor-pointer"
+        (click)="copyToClipboard()"
+      >
+        <ng-container *ngIf="copied; else notCopied">
+          <mat-icon class="text-gray-600 scale-90">check</mat-icon>
+        </ng-container>
+        <ng-template #notCopied>
+          <mat-icon class="text-gray-600 scale-90">file_copy</mat-icon>
+        </ng-template>
+      </button>
+      <p [hidden]="!showRoomRequired" class="text-sm text-red-500">
+        Room ID must contain 16 characters!
+      </p>
+    </div>
+
+    <button
+      [hidden]="!isDisabled"
+      class="p-2 mt-2 w-full rounded-xl text-white bg-black hover:bg-gray-600 duration-200 ease-in-out"
+      (click)="joinRoom()"
+    >
+      Create Room
+    </button>
+
+    <div class="flex flex-row items-center" [hidden]="!isDisabled">
+      <hr class="flex-grow border-t border-[.5px]" [hidden]="!isDisabled" />
+      <p class="px-4 text-gray-400 text-sm" [hidden]="!isDisabled">OR</p>
+      <hr class="flex-grow border-t border-[.5px]" [hidden]="!isDisabled" />
+    </div>
+
+    <button
+      [hidden]="!isDisabled"
+      class="p-2 w-full rounded-xl border border-black hover:bg-gray-300 duration-200 ease-in-out hover:border-gray-300"
+      (click)="toggleRoomInput()"
+    >
+      Join Room
+    </button>
+
+    <button
+      [hidden]="isDisabled"
+      class="p-2 w-full rounded-xl border border-black hover:bg-gray-300 duration-200 ease-in-out hover:border-gray-300"
+      (click)="joinRoom()"
+    >
+      Join Room
+    </button>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="bg-white">
+  <app-header></app-header>
+  <div class="flex flex-row gap-4 w-full p-8">
+    <div class="border bg-white rounded-2xl p-4 border-gray-300 w-full">
+      <div class="flex flex-row justify-between font-bold">
+        <div
+          class="flex items-center gap-2 bg-gray-100 p-2 px-4 rounded-xl shadow"
+        >
+          <mat-icon>person</mat-icon>
+
+          <p>
+            {{ chatSocketService.userName }}
+          </p>
+        </div>
+        <button
+          class="flex items-center gap-3 bg-gray-100 p-2 px-4 rounded-xl shadow hover:bg-gray-200 duration-200 ease-out"
+          [hidden]="chatSocketService.roomId === ''"
+          (click)="copyToClipboard()"
+        >
+          <p>{{ chatSocketService.roomId }}</p>
+          <ng-container *ngIf="copied; else notCopied">
+            <mat-icon class="text-gray-800 scale-90">check</mat-icon>
+          </ng-container>
+          <ng-template #notCopied>
+            <mat-icon class="text-gray-800 scale-90">file_copy</mat-icon>
+          </ng-template>
+        </button>
+      </div>
+      <app-chat
+        [MessagesProps]="messages"
+        [joinedUserProps]="joinedUser"
+        [leavingUserProps]="leavingUser"
+      ></app-chat>
+      <div class="flex flex-col w-full">
+        <div class="flex flex-row w-full gap-2">
+          <input
+            autofocus
+            type="text"
+            placeholder="Send a message..."
+            class="input input-bordered w-full shadow-sm"
+            (keyup)="setMessageInput($event)"
+            [value]="messageInput"
+            (keyup.enter)="sendMessage()"
+          />
+          <button
+            class="flex justify-center items-center gap-2 p-2 px-4 pr-2 bg-black text-white rounded-xl font-bold shadow hover:bg-gray-600 duration-200 ease-in-out"
+            (click)="sendMessage()"
+          >
+            Send
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
